@@ -7,102 +7,120 @@ interface Props {
 
 export const CVPreview: React.FC<Props> = ({ data }) => {
   return (
-    <div id="cv-preview" className="bg-white p-8 shadow-lg max-w-4xl mx-auto">
-      <div className="grid grid-cols-3 gap-8">
-        {/* Left Column */}
-        <div className="col-span-1 space-y-6">
-          {data.personalInfo.photo && (
-            <img
-              src={data.personalInfo.photo}
-              alt="Profile"
-              className="w-48 h-48 rounded-full object-cover mx-auto"
-            />
-          )}
-          <div className="space-y-2">
-            <h2 className="text-xl font-bold border-b-2 border-blue-500 pb-2">
-              Contact
-            </h2>
-            <p>{data.personalInfo.adresse}</p>
-            <p>{data.personalInfo.telephone}</p>
-            <p>{data.personalInfo.email}</p>
+      <div
+          id="cv-preview"
+          className="bg-gradient-to-b from-gray-50 to-gray-100 p-10 shadow-2xl max-w-6xl mx-auto rounded-3xl border border-gray-300 animate-fade-in"
+      >
+        {/* Header */}
+        <header className="relative bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white p-10 rounded-t-3xl shadow-xl">
+          <div className="flex items-center gap-10">
+            {/* Profile Picture */}
+            {data.personalInfo.photo && (
+                <img
+                    src={data.personalInfo.photo}
+                    alt="Profile"
+                    className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-xl"
+                />
+            )}
+            <div>
+              <h1 className="text-5xl font-extrabold tracking-wide drop-shadow-md">
+                {data.personalInfo.prenom} {data.personalInfo.nom}
+              </h1>
+              <p className="text-2xl mt-3 italic">{data.personalInfo.metier}</p>
+              <p className="mt-5 text-lg">
+                📧 {data.personalInfo.email} | 📞 {data.personalInfo.telephone} | 📍 {data.personalInfo.adresse}
+              </p>
+            </div>
           </div>
-          <div className="space-y-2">
-            <h2 className="text-xl font-bold border-b-2 border-blue-500 pb-2">
-              Compétences
-            </h2>
-            {data.competences.map((comp) => (
-              <div key={comp.id} className="space-y-1">
-                <p className="font-medium">{comp.nom}</p>
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <div
-                      key={i}
-                      className={`h-2 w-full rounded ${
-                        i < comp.niveau
-                          ? 'bg-blue-500'
-                          : 'bg-gray-200'
-                      }`}
-                    />
-                  ))}
-                </div>
+        </header>
+
+        {/* Body */}
+        <div className="grid grid-cols-12 gap-8 mt-10">
+          {/* Sidebar */}
+          <aside className="col-span-4 bg-white rounded-3xl shadow-lg p-8 space-y-8">
+            {/* Skills */}
+            <section>
+              <h2 className="text-xl font-semibold text-indigo-600 border-b-2 border-indigo-400 pb-2">
+                🌟 Compétences
+              </h2>
+              <div className="mt-4 space-y-6">
+                {data.competences.map((comp) => (
+                    <div key={comp.id}>
+                      <p className="text-gray-800 font-medium">{comp.nom}</p>
+                      <div className="flex gap-1 mt-2">
+                        {[...Array(5)].map((_, i) => (
+                            <div
+                                key={i}
+                                className={`h-2 w-8 rounded ${
+                                    i < comp.niveau ? 'bg-indigo-500' : 'bg-gray-300'
+                                }`}
+                            />
+                        ))}
+                      </div>
+                    </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <div className="space-y-2">
-            <h2 className="text-xl font-bold border-b-2 border-blue-500 pb-2">
-              Loisirs
-            </h2>
-            <ul className="list-disc list-inside">
-              {data.loisirs.map((loisir) => (
-                <li key={loisir.id}>{loisir.nom}</li>
-              ))}
-            </ul>
-          </div>
+            </section>
+
+            {/* Hobbies */}
+            <section>
+              <h2 className="text-xl font-semibold text-indigo-600 border-b-2 border-indigo-400 pb-2">
+                🎭 Loisirs
+              </h2>
+              <ul className="list-disc list-inside mt-4 space-y-3">
+                {data.loisirs.map((loisir) => (
+                    <li key={loisir.id} className="text-gray-700 text-lg">
+                      {loisir.nom}
+                    </li>
+                ))}
+              </ul>
+            </section>
+          </aside>
+
+          {/* Main Content */}
+          <main className="col-span-8 space-y-10">
+            {/* Professional Experiences */}
+            <section className="bg-white rounded-3xl shadow-lg p-8">
+              <h2 className="text-2xl font-bold text-indigo-600 border-b-4 border-indigo-400 pb-3">
+                💼 Expériences Professionnelles
+              </h2>
+              <div className="mt-6 space-y-8">
+                {data.experiences.map((exp) => (
+                    <div key={exp.id}>
+                      <h3 className="text-xl font-bold text-gray-800">{exp.poste}</h3>
+                      <p className="text-sm text-gray-500 italic">{exp.debut} - {exp.fin}</p>
+                      <p className="text-lg text-indigo-600 mt-1">{exp.entreprise}</p>
+                      <p className="text-gray-700 mt-3">{exp.description}</p>
+                    </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Education */}
+            <section className="bg-white rounded-3xl shadow-lg p-8">
+              <h2 className="text-2xl font-bold text-indigo-600 border-b-4 border-indigo-400 pb-3">
+                🎓 Formation
+              </h2>
+              <div className="mt-6 space-y-8">
+                {data.formations.map((form) => (
+                    <div key={form.id}>
+                      <h3 className="text-xl font-bold text-gray-800">{form.diplome}</h3>
+                      <p className="text-sm text-gray-500 italic">{form.annee}</p>
+                      <p className="text-lg text-indigo-600 mt-1">{form.etablissement}</p>
+                      <p className="text-gray-700 mt-3">{form.description}</p>
+                    </div>
+                ))}
+              </div>
+            </section>
+          </main>
         </div>
 
-        {/* Right Column */}
-        <div className="col-span-2 space-y-6">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold">
-              {data.personalInfo.prenom} {data.personalInfo.nom}
-            </h1>
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold border-b-2 border-blue-500 pb-2">
-              Expériences Professionnelles
-            </h2>
-            {data.experiences.map((exp) => (
-              <div key={exp.id} className="space-y-2">
-                <div className="flex justify-between">
-                  <h3 className="text-xl font-semibold">{exp.poste}</h3>
-                  <p className="text-gray-600">
-                    {exp.debut} - {exp.fin}
-                  </p>
-                </div>
-                <p className="text-lg text-blue-600">{exp.entreprise}</p>
-                <p className="text-gray-700">{exp.description}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold border-b-2 border-blue-500 pb-2">
-              Formation
-            </h2>
-            {data.formations.map((form) => (
-              <div key={form.id} className="space-y-2">
-                <div className="flex justify-between">
-                  <h3 className="text-xl font-semibold">{form.diplome}</h3>
-                  <p className="text-gray-600">{form.annee}</p>
-                </div>
-                <p className="text-lg text-blue-600">{form.etablissement}</p>
-                <p className="text-gray-700">{form.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Footer */}
+        <footer className="mt-10 text-center bg-gradient-to-r from-pink-500 to-indigo-500 text-white p-6 rounded-b-3xl shadow-lg">
+          <p className="text-lg font-medium">
+            🚀 Disponible pour relever de nouveaux défis professionnels ! Merci pour votre attention. ✨
+          </p>
+        </footer>
       </div>
-    </div>
   );
 };
